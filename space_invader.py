@@ -130,6 +130,13 @@ while running:
     hits = pygame.sprite.groupcollide(bullets, enemies, True, True)
     print(f">>> hits: {hits}") # 觀察一下會打印什麼
 
+    # 檢查敵人是否撞到玩家
+    # 這裡用 spritecollideany，只要有撞到就回傳 True
+    if pygame.sprite.spritecollideany(player, enemies):
+        # 遊戲結束 (簡單起見，我們直接結束)
+        print("GAME OVER")
+        running = False
+
     # --- 繪圖 ---
     screen.fill(BLACK)
     all_sprites.draw(screen)
