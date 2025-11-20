@@ -38,9 +38,11 @@ class Player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
 
-    def shoot(self):
-        # 我們等一下再來實作
-        print("SHOOT!")
+    def shoot(self, all_sprites_group, bullets_group):
+        """ 發射子彈 """
+        new_bullet = Bullet(self.rect.centerx, self.rect.top)
+        all_sprites_group.add(new_bullet) # 動態添加子彈到 Sprite Group
+        bullets_group.add(new_bullet) # 動態添加子彈到 Bullet Group
 
 
 # --- 新增 Bullet 類別 ---
@@ -61,7 +63,7 @@ class Bullet(pygame.sprite.Sprite):
         # 飛出畫面頂端就刪除
         if self.rect.bottom < 0:
             self.kill()
-            
+
 
 # --- 遊戲主程式 ---
 pygame.init()
@@ -71,6 +73,9 @@ clock = pygame.time.Clock()
 
 # --- 建立 Sprite Groups ---
 all_sprites = pygame.sprite.Group()
+
+bullets = pygame.sprite.Group() # 存放所有子彈
+
 player = Player()
 all_sprites.add(player)
 
@@ -84,7 +89,7 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE: # 按下空格鍵
-                player.shoot()
+                player.shoot(all_sprites, bullets)
 
     # --- 遊戲邏輯更新 ---
     all_sprites.update()
