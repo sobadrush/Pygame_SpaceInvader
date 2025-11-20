@@ -65,6 +65,27 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
+# --- 新增 Enemy 類別 ---
+class Enemy(pygame.sprite.Sprite):
+    """ 代表敵人的太空船 """
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((30, 30)) # 30x30 的方塊
+        self.image.fill(RED) # 紅色
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed_x = 2 # 敵人會左右移動
+
+    def update(self):
+        """ 左右移動 """
+        self.rect.x += self.speed_x
+        # 簡易的邊界反彈
+        if self.rect.right > SCREEN_WIDTH or self.rect.left < 0:
+            self.speed_x *= -1
+            self.rect.y += 10 # 碰壁時下降一點
+
+
 # --- 遊戲主程式 ---
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -75,6 +96,7 @@ clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 
 bullets = pygame.sprite.Group() # 存放所有子彈
+enemies = pygame.sprite.Group() # 存放所有敵人
 
 player = Player()
 all_sprites.add(player)
