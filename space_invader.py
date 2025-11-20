@@ -101,6 +101,13 @@ enemies = pygame.sprite.Group() # 存放所有敵人
 player = Player()
 all_sprites.add(player)
 
+# --- 產生敵人 ---
+for row in range(3): # 3 排
+    for col in range(8): # 8 欄
+        enemy = Enemy(col * 60 + 50, row * 40 + 50)
+        all_sprites.add(enemy) # 動態添加敵人到 Sprite Group
+        enemies.add(enemy) # 動態添加敵人到 Enemy Group
+
 running = True
 while running:
     clock.tick(60)
