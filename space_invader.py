@@ -42,6 +42,27 @@ class Player(pygame.sprite.Sprite):
         # 我們等一下再來實作
         print("SHOOT!")
 
+
+# --- 新增 Bullet 類別 ---
+class Bullet(pygame.sprite.Sprite):
+    """ 代表玩家發射的子彈 """
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((5, 15)) # 5x15 的方塊
+        self.image.fill(WHITE) # 白色
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.bottom = y
+        self.speed_y = -10
+
+    def update(self):
+        """ 移動子彈 """
+        self.rect.y += self.speed_y
+        # 飛出畫面頂端就刪除
+        if self.rect.bottom < 0:
+            self.kill()
+            
+
 # --- 遊戲主程式 ---
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
