@@ -123,6 +123,13 @@ while running:
     # --- 遊戲邏輯更新 ---
     all_sprites.update()
 
+    # --- 碰撞偵測 ---
+    # 檢查子彈是否打中敵人
+    # groupcollide 會回傳一個字典，告訴我們哪些敵人被擊中
+    # 兩個 True 表示子彈和敵人在碰撞後都「消失」 (kill)
+    hits = pygame.sprite.groupcollide(bullets, enemies, True, True)
+    print(f">>> hits: {hits}") # 觀察一下會打印什麼
+
     # --- 繪圖 ---
     screen.fill(BLACK)
     all_sprites.draw(screen)
