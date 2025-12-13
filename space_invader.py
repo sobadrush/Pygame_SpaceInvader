@@ -125,6 +125,7 @@ enemies = pygame.sprite.Group() # 存放所有敵人
 enemy_bullets = pygame.sprite.Group() # 存放所有 enemy 的子彈
 
 count = 0 # 計算已經判斷發射的次數
+score = 0 # 分數
 
 player = Player()
 all_sprites.add(player)
@@ -165,12 +166,27 @@ while running:
     hits = pygame.sprite.groupcollide(bullets, enemies, True, True)
     print(f">>> hits: {hits}") # 觀察一下會打印什麼
 
-    # 檢查敵人是否撞到玩家
+    # 檢查子彈是否擊中敵人, 加分
+    hits = pygame.sprite.groupcollide(enemies, bullets, True, True)
+    for enemy in hits:
+        score += 10
+
+    
     # 這裡用 spritecollideany，只要有撞到就回傳 True
     if pygame.sprite.spritecollideany(player, enemies):
-        # 遊戲結束 (簡單起見，我們直接結束)
+        running = False  # 玩家被擊中，遊戲結束 (檢查敵人是否撞到玩家)
         print("GAME OVER")
-        running = False
+        print(f"Your score: {score}")
+        
+    if pygame.sprite.spritecollideany(player, enemy_bullets):
+        running = False  # 玩家被擊中，遊戲結束 (檢查敵人子彈是否撞到玩家)
+        print("GAME OVER")
+        print(f"Your score: {score}")
+        
+    if len(enemies) == 0:
+        running = False  # 全部敵人被消滅，遊戲結束
+        print("YOU WIN!")
+        print(f"Your score: {score}")
 
     # --- 繪圖 ---
     screen.fill(BLACK)
