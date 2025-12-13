@@ -60,7 +60,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         """ 移動子彈 """
         self.rect.y += self.speed_y
-        # 飛出畫面頂端就刪除
+        # 飛出畫面「頂端」就刪除
         if self.rect.bottom < 0:
             self.kill()
 
@@ -85,6 +85,25 @@ class Enemy(pygame.sprite.Sprite):
             self.speed_x *= -1
             self.rect.y += 10 # 碰壁時下降一點
 
+
+# --- 新增 Enemy Bullet 類別 ---
+class EnemyBullet(pygame.sprite.Sprite):
+    """ 代表敵人發射的子彈 """
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((15, 15)) # 15x15 的方塊
+        self.image.fill(GREEN) # 綠色
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.bottom = y
+        self.speed_y = 10
+
+    def update(self):
+        """ 移動子彈 """
+        self.rect.y += self.speed_y
+        # 飛出畫面「底端」就刪除
+        if self.rect.top > SCREEN_HEIGHT:
+            self.kill()
 
 # --- 遊戲主程式 ---
 pygame.init()
