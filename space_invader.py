@@ -85,9 +85,9 @@ class Enemy(pygame.sprite.Sprite):
             self.speed_x *= -1
             self.rect.y += 10 # 碰壁時下降一點
             
-    def shoot(self):
+    def shoot(self, all_sprites_group, bullets_group):
         """ 敵人: 發射子彈 """
-        new_bullet = Bullet(self.rect.centerx, self.rect.bottom)
+        new_bullet = EnemyBullet(self.rect.centerx, self.rect.bottom)
         all_sprites_group.add(new_bullet) # 動態添加子彈到 Sprite Group
         bullets_group.add(new_bullet) # 動態添加子彈到 Bullet Group 
 
@@ -124,6 +124,7 @@ bullets = pygame.sprite.Group() # 存放 Player 的子彈
 enemies = pygame.sprite.Group() # 存放所有敵人
 enemy_bullets = pygame.sprite.Group() # 存放所有 enemy 的子彈
 
+count = 0 # 計算已經判斷發射的次數
 
 player = Player()
 all_sprites.add(player)
@@ -146,6 +147,13 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE: # 按下空格鍵
                 player.shoot(all_sprites, bullets)
+
+    # 每隔 1 秒，隨機選擇 5 個敵人發射子彈
+    game_time = pygame.time.get_ticks() // 1000 # 以秒為單位的遊戲時間
+    if game_time - count > 0:
+        count += 1
+        for i in range(5):
+            random.choice(enemies.sprites()).shoot(all_sprites, enemy_bullets)
 
     # --- 遊戲邏輯更新 ---
     all_sprites.update()
