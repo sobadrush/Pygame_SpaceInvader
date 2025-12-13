@@ -84,6 +84,12 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.right > SCREEN_WIDTH or self.rect.left < 0:
             self.speed_x *= -1
             self.rect.y += 10 # 碰壁時下降一點
+            
+    def shoot(self):
+        """ 敵人: 發射子彈 """
+        new_bullet = Bullet(self.rect.centerx, self.rect.bottom)
+        all_sprites_group.add(new_bullet) # 動態添加子彈到 Sprite Group
+        bullets_group.add(new_bullet) # 動態添加子彈到 Bullet Group 
 
 
 # --- 新增 Enemy Bullet 類別 ---
@@ -114,8 +120,10 @@ clock = pygame.time.Clock()
 # --- 建立 Sprite Groups ---
 all_sprites = pygame.sprite.Group()
 
-bullets = pygame.sprite.Group() # 存放所有子彈
+bullets = pygame.sprite.Group() # 存放 Player 的子彈
 enemies = pygame.sprite.Group() # 存放所有敵人
+enemy_bullets = pygame.sprite.Group() # 存放所有 enemy 的子彈
+
 
 player = Player()
 all_sprites.add(player)
